@@ -1,6 +1,9 @@
+import java.lang.Math;
+
 public class zadanie3 {
   public static int div(int n){
     int m = 0;
+    n = Math.abs(n);
     for (int i=1; i<n; i++){
       if (n % i == 0){
         m = i;
