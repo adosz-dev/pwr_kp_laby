@@ -4,12 +4,7 @@ public class PrimeNumbers {
   private ArrayList<Integer> primes;
   public PrimeNumbers(int n){
     this.primes = new ArrayList<>();
-    this.primes.add(2);
-    for (int i=3; i <= n; i++){
-      if (isPrime(i)){
-        this.primes.add(i);
-      }
-    }
+    createPrimes(n);
   }
   private boolean isPrime(int x){
     for (int i=0; i < this.primes.size(); i++){
@@ -21,6 +16,14 @@ public class PrimeNumbers {
       }
     }
     return true;
+  }
+  private void createPrimes(int n){
+    this.primes.add(2);
+    for (int i=3; i <= n; i++){
+      if (isPrime(i)){
+        this.primes.add(i);
+      }
+    }
   }
   public int getNumber(int m){
     if (m >= this.primes.size() || m < 0){
