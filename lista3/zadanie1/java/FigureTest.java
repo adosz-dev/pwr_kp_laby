@@ -19,7 +19,7 @@ class FigureData {
   private FigureInterface getQuadrangle()
     throws WrongParametersNumberException,
            WrongParametersException{
-    if (dimensions.size() < 2 || dimensions.size() > 5){
+    if (this.dimensions.size() < 2 || this.dimensions.size() > 5){
       throw new WrongParametersNumberException();
     }
     ArrayList<Double> dims_temp = new ArrayList<Double>();
@@ -57,15 +57,7 @@ class FigureData {
           InvalidFigureException,
           WrongParametersException{
     if (this.fig.equals("q")){
-      try {
-        return getQuadrangle();
-      }
-      catch (WrongParametersException ex){
-        throw new WrongParametersException();
-      }
-      catch (WrongParametersNumberException ex){
-        throw new WrongParametersNumberException();
-      }
+      return getQuadrangle();
     }
     else if (this.dimensions.size() == 1) {
       if (this.fig.equals("c")) {
