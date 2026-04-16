@@ -1,7 +1,6 @@
 import java.lang.Math;
 
 class Figure {
-  double value;
   public interface OneParamInterface {
     double calculateArea(double value);
     double calculatePerimeter(double value);

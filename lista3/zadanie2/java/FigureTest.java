@@ -74,15 +74,7 @@ class FigureData {
           InvalidFigureException,
           WrongParametersException{
     if (this.fig.equals("q")){
-      try {
-        getQuadrangle();
-      }
-      catch (WrongParametersException ex){
-        throw new WrongParametersException();
-      }
-      catch (WrongParametersNumberException ex){
-        throw new WrongParametersNumberException();
-      }
+      getQuadrangle();
     }
     else 
       if (this.dimensions.size() == 1) {
