@@ -13,9 +13,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
  
 public class Figures extends Application {
-  public enum Mode {EDIT, CREATE};
-  public Shape shape;
-  private Mode mode;
+  public ShapeType shape;
   private DrawingPane drawing_pane;
 
   @Override
@@ -62,21 +60,21 @@ public class Figures extends Application {
 
       Button rectangle = new SideBarButton("Rectangle");
       rectangle.setOnAction(e -> {
-        this.drawing_pane.setShape(Shape.RECTANGLE);
+        this.drawing_pane.setShape(ShapeType.RECTANGLE);
         this.drawing_pane.setTool(Tool.CREATE);
         this.drawing_pane.setCursor(Cursor.CROSSHAIR);
       });
 
       Button circle = new SideBarButton("Circle");
       circle.setOnAction(e -> {
-        this.drawing_pane.setShape(Shape.CIRCLE);
+        this.drawing_pane.setShape(ShapeType.CIRCLE);
         this.drawing_pane.setTool(Tool.CREATE);
         this.drawing_pane.setCursor(Cursor.CROSSHAIR);
       });
 
       Button polygon = new SideBarButton("Polygon");
       polygon.setOnAction(e -> {
-        this.drawing_pane.setShape(Shape.POLYGON);
+        this.drawing_pane.setShape(ShapeType.POLYGON);
         this.drawing_pane.setTool(Tool.CREATE);
         this.drawing_pane.setCursor(Cursor.CROSSHAIR);
       });
