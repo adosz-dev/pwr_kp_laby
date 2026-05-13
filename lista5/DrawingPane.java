@@ -1,5 +1,5 @@
 import javafx.scene.canvas.Canvas;
-// import javafx.scene.canvas.GraphicsContent;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.Cursor;
@@ -12,6 +12,10 @@ public class DrawingPane extends Pane {
   private boolean isDefining;
   private double x1;
   private double y1;
+  
+  Object editTarget = null;
+  boolean isEditing = false;
+
   private Tool currentTool = Tool.EDIT;
   private Shape currentShape = null;
   private Circle activeCircle;
@@ -23,6 +27,15 @@ public class DrawingPane extends Pane {
     this.currentShape = null;
     this.currentTool = Tool.EDIT;
     this.setCursor(Cursor.DEFAULT);
+  }
+  private void stopEditing(){
+    if (this.editTarget instanceof javafx.scene.shape.Shape){
+      ((javafx.scene.shape.Shape) this.editTarget).setStroke(Color.BLACK);
+    }
+    if (this.editTarget != null){
+      this.editTarget = null;
+    }
+    this.isEditing = false;
   }
 
   private void setClipDrawingPane(){
@@ -44,7 +57,7 @@ public class DrawingPane extends Pane {
       activeCircle.setCenterX(x1);
       activeCircle.setCenterY(y1);
       activeCircle.setRadius(0);
-      activeCircle.setFill(Color.WHITE);
+      activeCircle.setFill(Color.TRANSPARENT);
       activeCircle.setStroke(Color.BLACK);
 
       this.getChildren().add(activeCircle);
@@ -65,7 +78,7 @@ public class DrawingPane extends Pane {
       activeRectangle.setY(y1);
       activeRectangle.setWidth(0);
       activeRectangle.setHeight(0);
-      activeRectangle.setFill(Color.WHITE);
+      activeRectangle.setFill(Color.TRANSPARENT);
       activeRectangle.setStroke(Color.BLACK);
 
       this.getChildren().add(activeRectangle);
@@ -90,6 +103,21 @@ public class DrawingPane extends Pane {
             break;
         }
       }
+      // zaznaczanie figury
+      else if (currentTool == Tool.EDIT){
+        // zaznaczamy podwójnym kliknięciem
+        if (e.getClickCount() == 2){
+          stopEditing();
+          this.editTarget = e.getTarget();
+          if (this.editTarget instanceof javafx.scene.shape.Shape){
+            this.isEditing = true;
+            this.setCursor(Cursor.MOVE);
+          }
+          else {
+            stopEditing();
+          }
+        }
+      }
     });
 
     this.setOnMouseMoved(e -> {
@@ -109,6 +137,14 @@ public class DrawingPane extends Pane {
           activeRectangle.setY(Math.min(y1, y2));
           activeRectangle.setWidth(Math.abs(x2 - x1));
           activeRectangle.setHeight(Math.abs(y2 - y1));
+        }
+      }
+      else if (isEditing){
+        if (this.editTarget == e.getTarget()){
+          this.setCursor(Cursor.MOVE);
+        }
+        else {
+          this.setCursor(Cursor.DEFAULT);
         }
       }
     });
