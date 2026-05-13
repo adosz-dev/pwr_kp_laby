@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
 
 
@@ -17,7 +18,7 @@ public class DrawingPane extends Pane {
   boolean isEditing = false;
 
   private Tool currentTool = Tool.EDIT;
-  private Shape currentShape = null;
+  private ShapeType currentShape = null;
   private Circle activeCircle;
   private Rectangle activeRectangle;
   
@@ -29,8 +30,8 @@ public class DrawingPane extends Pane {
     this.setCursor(Cursor.DEFAULT);
   }
   private void stopEditing(){
-    if (this.editTarget instanceof javafx.scene.shape.Shape){
-      ((javafx.scene.shape.Shape) this.editTarget).setStroke(Color.BLACK);
+    if (this.editTarget instanceof Shape){
+      ((Shape) this.editTarget).setStroke(Color.BLACK);
     }
     if (this.editTarget != null){
       this.editTarget = null;
@@ -109,7 +110,7 @@ public class DrawingPane extends Pane {
         if (e.getClickCount() == 2){
           stopEditing();
           this.editTarget = e.getTarget();
-          if (this.editTarget instanceof javafx.scene.shape.Shape){
+          if (this.editTarget instanceof Shape){
             this.isEditing = true;
             this.setCursor(Cursor.MOVE);
           }
@@ -156,7 +157,7 @@ public class DrawingPane extends Pane {
   public void setTool(Tool tool) {
     this.currentTool = tool;
   }
-  public void setShape(Shape shape){
+  public void setShape(ShapeType shape){
     this.currentShape = shape;
   }
 }
