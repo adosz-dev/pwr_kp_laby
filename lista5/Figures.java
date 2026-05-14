@@ -15,6 +15,9 @@ import java.util.ArrayList;
 public class Figures extends Application {
   public ShapeType shape;
   private DrawingPane drawing_pane;
+  private Stage main_stage;
+  private final InfoPopup infoPopup = new InfoPopup();
+  private final ManualPopup manualPopup = new ManualPopup();
 
   @Override
   public void start(Stage main_stage) {
@@ -28,6 +31,7 @@ public class Figures extends Application {
 
       Scene scene = new Scene(main_layout, 1000, 800);
       main_stage.setScene(scene);
+      this.main_stage = main_stage;
 
       main_stage.show();
   }
@@ -44,9 +48,13 @@ public class Figures extends Application {
 
       Button save = new TopBarButton("save");
       Button load = new TopBarButton("load");
+      Button info = new TopBarButton("info");
 
+      info.setOnAction(e -> {
+        infoPopup.show(main_stage);
+      });
 
-      bar.getChildren().addAll(save, load);
+      bar.getChildren().addAll(save, load, info);
       return bar;
   }
 
@@ -57,6 +65,11 @@ public class Figures extends Application {
       bar.setPadding(new Insets(15, 8, 8, 8));
       bar.setPrefWidth(130);
       bar.setMinWidth(130);
+
+      Button manual = new SideBarButton("Manual");
+      manual.setOnAction(e -> {
+        manualPopup.show(main_stage);
+      });
 
       Button rectangle = new SideBarButton("Rectangle");
       rectangle.setOnAction(e -> {
@@ -79,10 +92,7 @@ public class Figures extends Application {
         this.drawing_pane.setCursor(Cursor.CROSSHAIR);
       });
 
-      Region spacer = new Region();
-      VBox.setVgrow(spacer, Priority.ALWAYS);
-
-      bar.getChildren().addAll(rectangle, circle, polygon, spacer);
+      bar.getChildren().addAll(manual, rectangle, circle, polygon);
       return bar;
   }
 
