@@ -1,7 +1,9 @@
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -10,6 +12,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.input.KeyCode;
 import javafx.scene.transform.Rotate;
+import javafx.scene.control.ColorPicker;
+import javafx.stage.Popup;
+import javafx.scene.control.PopupControl;
 import java.util.List;
 
 public class DrawingPane extends Pane {
@@ -46,10 +51,10 @@ public class DrawingPane extends Pane {
   }
 
   private void setClipDrawingPane(){
-    // tworzę clip, w którym będziemy rysować
-    // dzięki niemu figury nie będą wystawać poza obszar
+    // tworzę clip, w którym będziemy rysować
+    // dzięki niemu figury nie będą wystawać poza obszar
     Rectangle clip = new Rectangle();
-    // powiązuje szerokość clipu z wielkością pane'a
+    // powiązuje szerokość clipu z wielkością pane'a
     clip.widthProperty().bind(this.widthProperty());
     clip.heightProperty().bind(this.heightProperty());
     // ustawiam go jako klip do tego pane'a
@@ -156,6 +161,21 @@ public class DrawingPane extends Pane {
           }
           else {
             stopEditing();
+          }
+        }
+        // popup wyboru koloru
+        else if (e.getButton() == MouseButton.SECONDARY){
+          if (editTarget instanceof Shape target){
+            Popup colorPickerPopup = new Popup();
+            ColorPicker colorPicker = new ColorPicker((Color) target.getFill());
+            colorPicker.setOnAction(event -> {
+              target.setFill(colorPicker.getValue());
+              colorPickerPopup.hide();
+            });
+            HBox hbox = new HBox();
+            hbox.getChildren().add(colorPicker);
+            colorPickerPopup.getContent().add(hbox);
+            colorPickerPopup.show(this.getScene().getWindow());
           }
         }
       }
