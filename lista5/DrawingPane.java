@@ -8,6 +8,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Polygon;
+import java.util.List;
 
 public class DrawingPane extends Pane {
   private boolean isDefining;
@@ -182,6 +183,42 @@ public class DrawingPane extends Pane {
           this.setCursor(Cursor.DEFAULT);
         }
       }
+    });
+
+    // przemieszczanie figury 
+    this.setOnMousePressed(e -> {
+      if (isEditing && editTarget == e.getTarget()){
+        x1 = e.getX();
+        y1 = e.getY();
+      }
+    });
+
+    this.setOnMouseDragged(e -> {
+      if (isEditing && editTarget == e.getTarget()){
+        double deltaX = e.getX() - x1;
+        double deltaY = e.getY() - y1;
+        
+        // sprawdzam typy i robię cast
+        if (editTarget instanceof Circle c){
+          double centerX = c.getCenterX();
+          double centerY = c.getCenterY();
+          c.setCenterX(centerX + deltaX);
+          c.setCenterY(centerY + deltaY);
+        }
+        else if (editTarget instanceof Rectangle r){
+          r.setX(r.getX() + deltaX);
+          r.setY(r.getY() + deltaY);
+        }
+        else if(editTarget instanceof Polygon p){
+          List<Double> polygonPoints = p.getPoints();
+          for (int i=0; i<polygonPoints.size(); i+=2){
+            polygonPoints.set(i, polygonPoints.get(i) + deltaX);
+            polygonPoints.set(i+1, polygonPoints.get(i+1) + deltaY);
+          }
+        }
+      }
+      x1 = e.getX();
+      y1 = e.getY();
     });
   }
 
