@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
-
+import javafx.scene.shape.Polygon;
 
 public class DrawingPane extends Pane {
   private boolean isDefining;
@@ -20,10 +20,13 @@ public class DrawingPane extends Pane {
   private Tool currentTool = Tool.EDIT;
   private ShapeType currentShape = null;
   private Circle activeCircle;
+  private Polygon activePolygon;
   private Rectangle activeRectangle;
   
   private void closeShapeCreation(){
     activeCircle = null; 
+    activeRectangle = null;
+    activePolygon = null;
     isDefining = false;
     this.currentShape = null;
     this.currentTool = Tool.EDIT;
@@ -49,6 +52,34 @@ public class DrawingPane extends Pane {
     // ustawiam go jako klip do tego pane'a
     this.setClip(clip);
   }
+
+  // tworzenie wielokątów
+  private void createPolygon(MouseEvent e){
+    x1 = e.getX();
+    y1 = e.getY();
+    if (!isDefining){
+      activePolygon = new Polygon();
+      activePolygon.getPoints().addAll(x1,y1);
+      activePolygon.setFill(Color.TRANSPARENT);
+      activePolygon.setStroke(Color.BLACK);
+      isDefining = true;
+      this.getChildren().add(activePolygon);
+    }
+    else {
+      if (e.getClickCount() == 2){
+        activePolygon.getPoints().addAll(x1, y1);
+        // usuwam objekt z pane'a, jeżeli nie jest wielokątem
+        if (activePolygon.getPoints().size() < 3){
+          this.getChildren().remove(activePolygon);
+        }
+        closeShapeCreation();
+      }
+      else {
+        activePolygon.getPoints().addAll(x1, y1);
+      }
+    }
+  }
+
   private void createCircle(MouseEvent e){
     if (!isDefining) {
       x1 = e.getX();
@@ -101,6 +132,9 @@ public class DrawingPane extends Pane {
             break;
           case RECTANGLE:
             createRectangle(e);
+            break;
+          case POLYGON:
+            createPolygon(e);
             break;
         }
       }
