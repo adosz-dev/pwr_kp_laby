@@ -8,6 +8,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.input.KeyCode;
+import javafx.scene.transform.Rotate;
 import java.util.List;
 
 public class DrawingPane extends Pane {
@@ -148,6 +150,9 @@ public class DrawingPane extends Pane {
           if (this.editTarget instanceof Shape){
             this.isEditing = true;
             this.setCursor(Cursor.MOVE);
+            // javafx przenosi focus na drawingpane
+            // dzięki temu możemy używać klawiszy
+            this.requestFocus();
           }
           else {
             stopEditing();
@@ -219,6 +224,18 @@ public class DrawingPane extends Pane {
       }
       x1 = e.getX();
       y1 = e.getY();
+    });
+
+    // obracanie figur
+    this.setOnKeyPressed(e -> {
+      if (isEditing && editTarget instanceof Shape target){
+        if (e.getCode() == KeyCode.E){
+          target.setRotate(target.getRotate() + 5);
+        }
+        else if (e.getCode() == KeyCode.Q){
+          target.setRotate(target.getRotate() -5);
+        }
+      }
     });
   }
 
