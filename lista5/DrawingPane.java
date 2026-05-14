@@ -237,6 +237,14 @@ public class DrawingPane extends Pane {
         }
       }
     });
+    // zmiana rozmiaru figur
+    this.setOnScroll(e -> {
+      if (isEditing && editTarget instanceof Shape target){
+        double delta = e.getDeltaY();
+        target.setScaleX(target.getScaleX() + delta*0.01);
+        target.setScaleY(target.getScaleY() + delta*0.01);
+      }
+    });
   }
 
   public DrawingPane() {
