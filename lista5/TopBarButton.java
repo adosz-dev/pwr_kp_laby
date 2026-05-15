@@ -8,6 +8,10 @@ import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 
+/**
+ * Klasa przycisku używanego w pasku górnym
+ * Rozszerza klasę Button z JavaFX
+ */
 public class TopBarButton extends Button {
   public TopBarButton(String text){
     super(text);

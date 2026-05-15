@@ -9,6 +9,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 
 
+/**
+ * Klasa przycisku używanego w pasku bocznym
+ * Rozszerza klasę Button z JavaFX
+ */
 public class SideBarButton extends Button{
   public SideBarButton(String text){
 

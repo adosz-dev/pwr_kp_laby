@@ -16,21 +16,37 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Klasa panelu rysowania, umożliwiającego tworzenie i edytowanie figur
+ * Obsługuje Circle, Rectangle i Polygon
+ */
 public class DrawingPane extends Pane {
+  /** czy trwa definiowanie nowej figury */
   private boolean isDefining;
+
+  /** współrzędne punktu startowego lub poprzedniej 
+   * pozycji myszy podczas przeciągania
+   * */
   private double x1;
   private double y1;
-  
+ 
+  /** aktualnie edytowana figura */
   Object editTarget = null;
+
+  /** czy w danej chwili trwa edycja */
   boolean isEditing = false;
 
   private Tool currentTool = Tool.EDIT;
   private ShapeType currentShape = null;
+
+  /** figury aktualnie tworzone przez użytkownika */
   private Circle activeCircle;
   private Polygon activePolygon;
   private Rectangle activeRectangle;
   
-  // zapisywanie i wczytywanie z pliku
+  /**
+   * otwiera okno wyboru pliku i zapisuje wszystkie figury
+   */
   public void saveToFile(){
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Zapisz figury");
@@ -49,6 +65,9 @@ public class DrawingPane extends Pane {
     }
   }
 
+  /**
+   * otwiera okno wyboru pliku i wczytuje figury
+   */
   public void loadFromFile(){
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Wczytaj figury");
@@ -67,6 +86,9 @@ public class DrawingPane extends Pane {
     }
   }
 
+  /** 
+   * kończy proces tworzenia figury
+   */
   private void closeShapeCreation(){
     activeCircle = null; 
     activeRectangle = null;
@@ -76,6 +98,10 @@ public class DrawingPane extends Pane {
     this.currentTool = Tool.EDIT;
     this.setCursor(Cursor.DEFAULT);
   }
+  
+  /**
+   * przerywa edycje figury
+   */
   private void stopEditing(){
     if (this.editTarget instanceof Shape){
       ((Shape) this.editTarget).setStroke(Color.BLACK);
@@ -86,9 +112,11 @@ public class DrawingPane extends Pane {
     this.isEditing = false;
   }
 
+  /**
+   * tworzy clip, dzięki któremu figury
+   * nie będą wystawać poza obszar rysowania
+   */
   private void setClipDrawingPane(){
-    // tworzę clip, w którym będziemy rysować
-    // dzięki niemu figury nie będą wystawać poza obszar
     Rectangle clip = new Rectangle();
     // powiązuje szerokość clipu z wielkością pane'a
     clip.widthProperty().bind(this.widthProperty());
@@ -97,7 +125,10 @@ public class DrawingPane extends Pane {
     this.setClip(clip);
   }
 
-  // tworzenie wielokątów
+  /**
+   * obsługuje tworzenie wielokąta
+   * @param e MouseEvent z kliknięcia
+   */
   private void createPolygon(MouseEvent e){
     x1 = e.getX();
     y1 = e.getY();
@@ -124,6 +155,10 @@ public class DrawingPane extends Pane {
     }
   }
 
+  /** 
+   * obsługuje tworzenie okręgu
+   * @param e MouseEvent z kliknięcia
+   */
   private void createCircle(MouseEvent e){
     if (!isDefining) {
       x1 = e.getX();
@@ -144,6 +179,11 @@ public class DrawingPane extends Pane {
       closeShapeCreation();
     }
   }
+
+  /** 
+   * obsługuje tworzenie prostokąta
+   * @param e MouseEvent z kliknięcia
+   */
   private void createRectangle(MouseEvent e){
     if (!isDefining) {
       x1 = e.getX();
@@ -165,6 +205,9 @@ public class DrawingPane extends Pane {
       closeShapeCreation();
     }
   }
+  /**
+   * handlery zdarzeń i zachowanie panelu
+   */
   private void buildDrawingPane(){
     setClipDrawingPane();
 

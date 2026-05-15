@@ -10,9 +10,14 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
+/**
+ * Klasa popupu z informacjami o aplikacji 
+ */
 public class InfoPopup extends Popup {
   public InfoPopup() {
     super();
+
+    // automatyczne ukrywanie okna przy kliknięciu poza nie
     setAutoHide(true);
 
     VBox content = new VBox();
@@ -22,8 +27,10 @@ public class InfoPopup extends Popup {
     content.setAlignment(Pos.CENTER_LEFT);
     Label title = new Label("Figures");
     title.setFont(Font.font("SansSerif", FontWeight.BOLD, 22));
+
     Label purpose = new Label("Rysowanie i edytowanie figur geometrycznych");
     purpose.setFont(Font.font("SansSerif", 18));
+
     Label name = new Label("Adam Latos-Ważny");
     name.setFont(Font.font("SansSerif", 18));
 

@@ -10,9 +10,14 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
+/**
+ * Klasa popupu z instrukcją obsługi do aplikacji 
+ */
 public class ManualPopup extends Popup {
   public ManualPopup() {
     super();
+
+    // automatyczne ukrywanie okna przy kliknięciu poza nie
     setAutoHide(true);
 
     VBox content = new VBox();

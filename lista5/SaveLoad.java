@@ -10,7 +10,21 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa odpowiedzialna za wczytywanie i zapisywanie stanu rysunków
+ * Zapisuje ona te kształty w formacie:
+ * <ul>
+ * <li>Dla okręgu: circle,x,y,r,kolor,rotacja,skala_rozmiaru</li>
+ * <li>Dla prostokąta: rectangle,x,y,width,height,kolor,rotacja,skala_rozmiaru</li>
+ * <li>Dla wielokąta: polygon,x1,y1,x2,y2,...,xn,yn;kolor;rotacja;skala_rozmiaru</li>
+ * </ul>
+ */
 public class SaveLoad {
+  /**
+   * Zapisuje listę obiektów do pliku tekstowego
+   * @param shapes lista Nodeów należący do drawing_pane
+   * @param file obiekt pliku docelowego
+   */
   public static void save(List<Node> shapes, File file) throws IOException {
     // StringBuilder pozwala na budowanie Stringów
     // bez ponownego ich tworzenia za każdym
@@ -52,8 +66,15 @@ public class SaveLoad {
     }
 
     Files.writeString(file.toPath(), sb.toString());
-}
+   }
 
+  /**
+   * Wczytuje listę kształtów z pliku tekstowego .fig
+   * @param file obiekt pliku, z którego wczytuje dane
+   * @return lista obiektów typu Shape
+   * @throws IOException błąd odczytu
+   * @throws NumberFormatException jeśli dane, które powinny być liczbami nimi nie są
+   */
 public static List<Shape> load(File file) throws IOException {
     List<Shape> shapes = new ArrayList<>();
 

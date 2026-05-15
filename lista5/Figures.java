@@ -12,17 +12,35 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import java.util.ArrayList;
  
+/**
+ * Program służacy do rysowania i edytowania figur geometrycznych
+ * @author Adam Latos-Ważny
+ */
 public class Figures extends Application {
+  /** wybrany typ kształtu do narysowania */
   public ShapeType shape;
+
+  /** panel do rysowania*/
   private DrawingPane drawing_pane;
+
   private Stage main_stage;
+
+  /** popup wyświetlający informacje o programie */
   private final InfoPopup infoPopup = new InfoPopup();
+
+  /** popup wyświetlający instrukcje obsługi */
   private final ManualPopup manualPopup = new ManualPopup();
 
+  /**
+   * Inicjalizacja głównego okna aplikacji
+   * @param main_stage Stage dostarczany przez JavaFX
+   */
   @Override
   public void start(Stage main_stage) {
       main_stage.setTitle("new document - Figures");
       BorderPane main_layout = new BorderPane();
+
+      // budowa głównego i bocznego paska narzędzi
       main_layout.setTop(buildTopBar());
       main_layout.setLeft(buildSideBar());
 
@@ -35,6 +53,10 @@ public class Figures extends Application {
 
       main_stage.show();
   }
+  /**
+   * Tworzy górny pasek narzędzi
+   * @return HBox pasek górny jako HBox
+   */
   private HBox buildTopBar() {
       HBox bar = new HBox(10);
       bar.setPadding(new Insets(15, 20, 15, 10));
@@ -66,6 +88,10 @@ public class Figures extends Application {
       return bar;
   }
 
+  /**
+   * Tworzy boczny pasek narzędzi
+   * @return VBox pasek boczny jako VBox
+   */
   private VBox buildSideBar() {
       VBox bar = new VBox(8);
       bar.setBackground(new Background(new BackgroundFill(
