@@ -50,6 +50,14 @@ public class Figures extends Application {
       Button load = new TopBarButton("load");
       Button info = new TopBarButton("info");
 
+      save.setOnAction(e -> {
+        drawing_pane.saveToFile();
+      });
+
+      load.setOnAction(e -> {
+        drawing_pane.loadFromFile();
+      });
+
       info.setOnAction(e -> {
         infoPopup.show(main_stage);
       });

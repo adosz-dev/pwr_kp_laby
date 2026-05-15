@@ -1,5 +1,3 @@
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
@@ -11,10 +9,11 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.input.KeyCode;
-import javafx.scene.transform.Rotate;
 import javafx.scene.control.ColorPicker;
 import javafx.stage.Popup;
 import javafx.scene.control.PopupControl;
+import javafx.stage.FileChooser;
+import java.io.File;
 import java.util.List;
 
 public class DrawingPane extends Pane {
@@ -31,6 +30,43 @@ public class DrawingPane extends Pane {
   private Polygon activePolygon;
   private Rectangle activeRectangle;
   
+  // zapisywanie i wczytywanie z pliku
+  public void saveToFile(){
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Zapisz figury");
+    // wykorzystujemy rozszerzenie .fig
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("Figures file", "*.fig")
+    );
+    File file = fileChooser.showSaveDialog(this.getScene().getWindow());
+    if (file != null){
+      try {
+        SaveLoad.save(this.getChildren(), file);
+      }
+      catch (Exception e){
+        System.out.println("Nie udalo sie zapisac");
+      }
+    }
+  }
+
+  public void loadFromFile(){
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Wczytaj figury");
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("Figures file", "*.fig")
+    );
+    File file = fileChooser.showOpenDialog(this.getScene().getWindow());
+    if (file != null){
+      try {
+        this.getChildren().clear();
+        this.getChildren().addAll(SaveLoad.load(file));
+      }
+      catch (Exception e){
+        System.out.println("Nie udalo sie wczytac");
+      }
+    }
+  }
+
   private void closeShapeCreation(){
     activeCircle = null; 
     activeRectangle = null;
