@@ -1,0 +1,61 @@
+\doxysection{Save\+Load Class Reference}
+\hypertarget{classSaveLoad}{}\label{classSaveLoad}\index{SaveLoad@{SaveLoad}}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \doxymbox{\hyperlink{classSaveLoad_a5441530c4bf5862294709a13428fdff9}{save}} (List$<$ Node $>$ shapes, File file)  throws IOException 
+\item 
+static List$<$ Shape $>$ \doxymbox{\hyperlink{classSaveLoad_a6eb89e273ec546f8374b7223d3d4a728}{load}} (File file)  throws IOException 
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Klasa odpowiedzialna za wczytywanie i zapisywanie stanu rysunków Zapisuje ona te kształty w formacie:\+ 
+\begin{DoxyItemize}
+\item Dla okręgu:\+ circle,x,y,r,kolor,rotacja,skala\+\_\+rozmiaru 
+\item Dla prostokąta:\+ rectangle,x,y,width,height,kolor,rotacja,skala\+\_\+rozmiaru 
+\item Dla wielokąta:\+ polygon,x1,y1,x2,y2,...,xn,yn;kolor;rotacja;skala\+\_\+rozmiaru 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{classSaveLoad_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classSaveLoad_a6eb89e273ec546f8374b7223d3d4a728}\index{SaveLoad@{SaveLoad}!load@{load}}
+\index{load@{load}!SaveLoad@{SaveLoad}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily \label{classSaveLoad_a6eb89e273ec546f8374b7223d3d4a728} 
+List$<$ Shape $>$ Save\+Load.\+load (\begin{DoxyParamCaption}\item[{File}]{file}{}\end{DoxyParamCaption}) throws IOException\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Wczytuje listę kształtów z pliku tekstowego .fig 
+\begin{DoxyParams}{Parameters}
+{\em file} & obiekt pliku, z którego wczytuje dane \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+lista obiektów typu Shape 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em IOException} & błąd odczytu \\
+\hline
+{\em Number\+Format\+Exception} & jeśli dane, które powinny być liczbami nimi nie są \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{classSaveLoad_a5441530c4bf5862294709a13428fdff9}\index{SaveLoad@{SaveLoad}!save@{save}}
+\index{save@{save}!SaveLoad@{SaveLoad}}
+\doxysubsubsection{\texorpdfstring{save()}{save()}}
+{\footnotesize\ttfamily \label{classSaveLoad_a5441530c4bf5862294709a13428fdff9} 
+void Save\+Load.\+save (\begin{DoxyParamCaption}\item[{List$<$ Node $>$}]{shapes}{, }\item[{File}]{file}{}\end{DoxyParamCaption}) throws IOException\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Zapisuje listę obiektów do pliku tekstowego 
+\begin{DoxyParams}{Parameters}
+{\em shapes} & lista Nodeów należący do drawing\+\_\+pane \\
+\hline
+{\em file} & obiekt pliku docelowego \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Save\+Load.\+java\end{DoxyCompactItemize}
