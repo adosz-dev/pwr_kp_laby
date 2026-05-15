@@ -17,5 +17,13 @@ public class TopBarButton extends Button {
     super(text);
     this.setFont(Font.font("SansSerif", 15));
     this.setCursor(Cursor.HAND);
+    this.setTextFill(Color.WHITE);
+    this.setBackground(new Background(new BackgroundFill(
+            Color.GRAY, new CornerRadii(4), Insets.EMPTY)));
+
+    this.setOnMouseEntered(e -> this.setBackground(new Background(new BackgroundFill(
+            Color.rgb(120, 120, 120), new CornerRadii(4), Insets.EMPTY))));
+    this.setOnMouseExited(e -> this.setBackground(new Background(new BackgroundFill(
+            Color.GRAY, new CornerRadii(4), Insets.EMPTY))));
   }
 }
