@@ -57,6 +57,14 @@ public class Simulation extends Application {
         Popup errorPopup = new ErrorPopup("Nieprawidłowy format liczby");
         errorPopup.show(mainStage);
       }
+      catch (Board.WrongProbabilityException ex){
+        Popup errorPopup = new ErrorPopup(ex.getMessage());
+        errorPopup.show(mainStage);
+      }
+      catch (Board.NegativeParameterException ex){
+        Popup errorPopup = new ErrorPopup(ex.getMessage());
+        errorPopup.show(mainStage);
+      }
     });
 
     VBox mainLayout = new VBox();

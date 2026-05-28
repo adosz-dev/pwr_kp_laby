@@ -32,6 +32,24 @@ public class Board extends BorderPane {
   private final double p;
 
   /**
+   * Wyjątek dotyczący błędnego parametru p
+   */
+  public static class WrongProbabilityException extends Exception {
+    public WrongProbabilityException(){
+      super("Błędny parametr p");
+    }
+  }
+
+  /**
+   * Wyjątek dotyczący ujemnych parametrów
+   */
+  public static class NegativeParameterException extends Exception {
+    public NegativeParameterException(){
+      super("Parametr nie może być ujemny");
+    }
+  }
+
+  /**
    * Komórka planszy przechowująca swoje współrzędne w siatce
    */
   class ColorPane extends Pane {
@@ -358,17 +376,34 @@ public class Board extends BorderPane {
   }
 
   /**
+   * Walidacja nadanych parametrów
+   */
+  private void checkParametersValid() 
+      throws WrongProbabilityException, NegativeParameterException {
+      if (this.p < 0 || this.p > 1){
+        throw new WrongProbabilityException();
+      }
+      
+      if (this.k < 0 || this.n < 0 || this.m < 0){
+        throw new NegativeParameterException();
+      }
+  }
+
+  /**
    * Tworzenie planszy
    * @param n liczba kolumn
    * @param m liczba wierszy
    * @param k bazowy czas (ms) wyznaczający opóźnienie między aktualizacjami komórki
    * @param p prawdopodobieństwo, że wątek komórki wybierze losowy kolor (zamiast koloru sąsiadów)
    */
-  public Board(int n, int m, int k, double p){
+  public Board(int n, int m, int k, double p) 
+      throws WrongProbabilityException, NegativeParameterException {
     this.n = n;
     this.m = m;
     this.k = k;
     this.p = p;
+
+    checkParametersValid();
 
     colors = new ArrayList<>();
     panes = new ArrayList<>();
