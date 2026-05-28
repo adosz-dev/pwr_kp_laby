@@ -5,11 +5,18 @@ import javafx.scene.text.FontPosture;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 
+/**
+ * Label nazwy programu
+ */
 public class TitleLabel extends Label {
+  /**
+   * @param text tekst tytułu
+   */
   public TitleLabel(String text){
     super(text);
     styleLabel();
   }
+
   private void styleLabel(){
     this.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 24));
     this.setTextFill(Color.BLACK);

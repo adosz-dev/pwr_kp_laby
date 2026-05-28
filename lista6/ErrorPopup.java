@@ -14,6 +14,10 @@ import javafx.scene.paint.Color;
  * Klasa popupu w przypadku błędu przy generowaniu planszy
  */
 public class ErrorPopup extends Popup {
+  /**
+   * Tworzenie popupu z komunikatem błędu
+   * @param errorInfo opis błędu wyświetlany użytkownikowi
+   */
   public ErrorPopup(String errorInfo) {
     super();
 

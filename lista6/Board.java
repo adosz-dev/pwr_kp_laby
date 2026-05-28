@@ -16,6 +16,11 @@ import javafx.scene.layout.RowConstraints;
 import java.util.ArrayList;
 
 
+/**
+ * Plansza symulacji, w której każda komórka jest Panem i każdy z nich
+ * jest obsługiwany przez inny wątek. Wątek zmienia jej kolor na losowy, lub
+ * na podstawie sąsiednich
+ */
 public class Board extends BorderPane {
   private static final Random RAND = new Random();
   private final GridPane gridPane = new GridPane();
@@ -26,8 +31,16 @@ public class Board extends BorderPane {
   private final int k;
   private final double p;
 
+  /**
+   * Komórka planszy przechowująca swoje współrzędne w siatce
+   */
   class ColorPane extends Pane {
     public int row, col;
+
+    /**
+     * @param col indeks kolumny komórki
+     * @param row indeks wiersza komórki
+     */
     public ColorPane(int col, int row){
       super();
       this.row = row;
@@ -35,8 +48,16 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * Wątek odpowiedzialny za aktualizację koloru jednej komórki
+   */
   class CellThread extends Thread {
     private int row, col;
+
+    /**
+     * @param col indeks kolumny obsługiwanej komórki
+     * @param row indeks wiersza obsługiwanej komórki
+     */
     public CellThread(int col, int row){
       this.row = row;
       this.col = col;
@@ -44,6 +65,10 @@ public class Board extends BorderPane {
       this.setDaemon(true);
     }
 
+    /**
+     * Ustawianie koloru w tablicy kolorów komórek i tło komórki
+     * @param c kolor komórki
+     */
     private void setColor(Color c){
       // blokujemy this funkcji zewnetrznej Board
       synchronized(Board.this){
@@ -56,6 +81,13 @@ public class Board extends BorderPane {
       }
     }
 
+    /**
+     * Dodawanie wartości RGB do tablicy sumy tych kolorów, w celu
+     * obliczeniu średniego koloru wśród sąsiadów
+     * @param col indeks kolumny komórki
+     * @param row indeks wiersza komórki
+     * @param sum tablica, do której sumujemy wartości z RGB
+     */
     private void getColor(int col, int row, int[] sum){
       Color c = colors.get(col).get(row);
       sum[0] += (int) Math.round(c.getRed()*255);
@@ -63,6 +95,10 @@ public class Board extends BorderPane {
       sum[2] += (int) Math.round(c.getBlue()*255);
     }
 
+    /**
+     * Ustawianie koloru komórki na średnią kolorów aktywnych sąsiadów.
+     * Jeśli żaden sąsiad nie jest aktywny, kolor pozostaje bez zmian.
+     */
     private void setNeighboringColor(){
       synchronized(Board.this){
         int[] sum = {0, 0, 0};
@@ -94,6 +130,11 @@ public class Board extends BorderPane {
       }
     }
 
+    /**
+     * Co losowy czas (oparty na k) z prawdopodobieństwem p
+     * ustawia losowy kolor, a w przeciwnym razie przyjmuje kolor sąsiadów.
+     * Działa dopóki komórka jest aktywna.
+     */
     @Override
     public void run() {
       while(isActive.get(col).get(row)){
@@ -115,10 +156,16 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * @return losowy kolor RGB
+   */
   private Color getRandomColor(){
     return Color.rgb(RAND.nextInt(256), RAND.nextInt(256), RAND.nextInt(256));
   }
 
+  /**
+   * Wypełnianie tablicę colors losowymi kolorami
+   */
   private void setRandomColors(){
     for (int i=0; i<n; i++){
       for (int j=0; j<m; j++){
@@ -127,8 +174,10 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * Ustalanie wielkości komórek po równo dla każdej
+   */
   private void setConstraints(){
-    // ustalanie wielkości komórek po równo dla każdej
     for (int j=0; j<n; j++){
       ColumnConstraints colSize = new ColumnConstraints();
       colSize.setPercentWidth(100.0 / n);
@@ -142,6 +191,9 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * Uruchamia wątek {@link CellThread} dla każdej komórki planszy.
+   */
   private void runThreads(){
     for (int i=0; i<n; i++){
       for (int j=0; j<m; j++){
@@ -150,6 +202,13 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * Konfiguruje pojedynczy panel komórki: ustawia tło, rozmiar oraz obsługę kliknięcia
+   * (przełączanie aktywności komórki) i dodaje go do siatki.
+   * @param cellPane panel komórki do skonfigurowania
+   * @param col      indeks kolumny docelowej w siatce
+   * @param row      indeks wiersza docelowego w siatce
+   */
   private void setPane(ColorPane cellPane, final int col, final int row){
     cellPane.setBackground(new Background(
           new BackgroundFill(colors.get(col).get(row), CornerRadii.EMPTY, Insets.EMPTY)
@@ -169,6 +228,9 @@ public class Board extends BorderPane {
     panes.get(col).add(cellPane);
   }
 
+  /**
+   * Tworzy i konfiguruje panele dla wszystkich komórek planszy.
+   */
   private void setPanes(){
     for (int i=0; i<n; i++){
       for (int j=0; j<m; j++){
@@ -178,6 +240,10 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * Dodaje nową kolumnę do planszy: aktualizuje ograniczenia siatki, tworzy struktury danych
+   * dla nowych komórek i uruchamia dla nich wątki.
+   */
   private void addNewCol(){
     for (int i=0; i<gridPane.getColumnConstraints().size(); i++){
       ColumnConstraints colSize = new ColumnConstraints();
@@ -207,6 +273,10 @@ public class Board extends BorderPane {
     n++;
   }
 
+  /**
+   * Dodaje nowy wiersz do planszy: aktualizuje ograniczenia siatki, tworzy struktury danych
+   * dla nowych komórek i uruchamia dla nich wątki.
+   */
   private void addNewRow(){
     for (int i=0; i<gridPane.getRowConstraints().size(); i++){
       RowConstraints rowSize = new RowConstraints();
@@ -229,6 +299,9 @@ public class Board extends BorderPane {
     m ++;
   }
 
+  /**
+   * Tworzenie i dodawanie przycisków umożliwiających dynamiczne dodawanie wierszy i kolumn
+   */
   private void addButtons(){
     Button newRowButton = new Button("+ Dodaj rząd");
     newRowButton.setOnMouseClicked(event -> addNewRow());
@@ -248,6 +321,9 @@ public class Board extends BorderPane {
     this.setRight(newColButtonContainer);
   }
 
+  /**
+   * Oznaczanie wszystkich komórek jako aktywne
+   */
   private void setActive(){
     for (int i=0; i<n; i++){
       for (int j=0; j<m; j++){
@@ -256,6 +332,9 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * Oznaczanie wszystkich komórek jako nieaktywne. Powoduje to zakończenie ich wątków.
+   */
   public void setInactive(){
     for (int i=0; i<n; i++){
       for (int j=0; j<m; j++){
@@ -264,6 +343,9 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * Inicjalizowanie listy colors, isActive i panes
+   */
   private void initArrayLists(){
     for (int i=0; i<n; i++){
       ArrayList<ColorPane> rowPanes = new ArrayList<>();
@@ -275,6 +357,13 @@ public class Board extends BorderPane {
     }
   }
 
+  /**
+   * Tworzenie planszy
+   * @param n liczba kolumn
+   * @param m liczba wierszy
+   * @param k bazowy czas (ms) wyznaczający opóźnienie między aktualizacjami komórki
+   * @param p prawdopodobieństwo, że wątek komórki wybierze losowy kolor (zamiast koloru sąsiadów)
+   */
   public Board(int n, int m, int k, double p){
     this.n = n;
     this.m = m;
