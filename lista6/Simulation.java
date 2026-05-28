@@ -1,8 +1,11 @@
 import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.geometry.Insets;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Button;
@@ -17,20 +20,23 @@ public class Simulation extends Application {
   public void start(Stage mainStage){
     TitleLabel appName = new TitleLabel("Color Simulation");
 
-    Label sizesLabel = new Label("Rozmiary tabeli:");
+    Label sizesLabel = new CategoryLabel("Rozmiary tabeli:");
 
-    Label nLabel = new Label("n:");
+    Label nLabel = new FieldLabel("n:");
     TextField nInput = new TextField();
-    Label mLabel = new Label("m:");
+    Label mLabel = new FieldLabel("m:");
     TextField mInput = new TextField();
 
-    Label other = new Label("Inne parametry:");
-    Label kLabel = new Label("Szybkość działania");
+    Label other = new CategoryLabel("Inne parametry:");
+    Label kLabel = new FieldLabel("Szybkość działania");
     TextField kInput = new TextField();
-    Label pLabel = new Label("Prawdopodobieństwo zmiany koloru");
+    Label pLabel = new FieldLabel("Prawdopodobieństwo zmiany koloru");
     TextField pInput = new TextField();
-    
-    Button showButton = new Button("Start");
+   
+    HBox showButtonContainer = new HBox();
+    showButtonContainer.setAlignment(Pos.CENTER);
+    Button showButton = new RunButton("Start");
+    showButtonContainer.getChildren().add(showButton);
 
     showButton.setOnAction(e -> {
       try {
@@ -54,6 +60,8 @@ public class Simulation extends Application {
     });
 
     VBox mainLayout = new VBox();
+    mainLayout.setPadding(new Insets(10, 30, 10, 30));
+    mainLayout.setSpacing(10);
     mainLayout.getChildren().addAll(
         appName,
         new Separator(),
@@ -68,10 +76,10 @@ public class Simulation extends Application {
         kInput,
         pLabel,
         pInput,
-        showButton
+        showButtonContainer
     );
 
-    Scene mainScene = new Scene(mainLayout, 500, 400);
+    Scene mainScene = new Scene(mainLayout, 500, 600);
     mainStage.setTitle("Color Simulation");
     mainStage.setScene(mainScene);
     mainStage.show();

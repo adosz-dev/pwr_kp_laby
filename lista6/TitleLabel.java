@@ -8,9 +8,9 @@ import javafx.scene.paint.Color;
 public class TitleLabel extends Label {
   public TitleLabel(String text){
     super(text);
-    styleButton();
+    styleLabel();
   }
-  private void styleButton(){
+  private void styleLabel(){
     this.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 24));
     this.setTextFill(Color.BLACK);
     this.setAlignment(Pos.CENTER);

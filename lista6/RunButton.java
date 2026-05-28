@@ -1,17 +1,16 @@
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 
-public class CategoryLabel extends Label {
-  public CategoryLabel(String text){
+public class RunButton extends Button {
+  public RunButton(String text){
     super(text);
-    styleLabel();
+    styleButton();
   }
-  private void styleLabel(){
+  private void styleButton(){
     this.setFont(Font.font("SansSerif", 18));
     this.setTextFill(Color.BLACK);
     this.setAlignment(Pos.CENTER);
-    this.setMaxWidth(Double.MAX_VALUE);
   }
 }
