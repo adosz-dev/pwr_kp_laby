@@ -1,6 +1,9 @@
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.Pane;
@@ -228,17 +231,21 @@ public class Board extends BorderPane {
 
   private void addButtons(){
     Button newRowButton = new Button("+ Dodaj rząd");
-    newRowButton.setOnMouseClicked(event -> {
-      addNewRow();
-    });
+    newRowButton.setOnMouseClicked(event -> addNewRow());
 
     Button newColButton = new Button("+ Dodaj kolumnę");
-    newColButton.setOnMouseClicked(event -> {
-      addNewCol();
-    });
+    newColButton.setOnMouseClicked(event -> addNewCol());
 
-    this.setBottom(newRowButton);
-    this.setRight(newColButton);
+    HBox newRowButtonContainer = new HBox(newRowButton);
+    newRowButtonContainer.setAlignment(Pos.CENTER);
+    newRowButtonContainer.setPadding(new Insets(8));
+
+    VBox newColButtonContainer = new VBox(newColButton);
+    newColButtonContainer.setAlignment(Pos.CENTER);
+    newColButtonContainer.setPadding(new Insets(8));
+
+    this.setBottom(newRowButtonContainer);
+    this.setRight(newColButtonContainer);
   }
 
   private void setActive(){
