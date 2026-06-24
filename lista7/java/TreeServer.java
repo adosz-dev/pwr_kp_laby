@@ -6,7 +6,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.function.Function;
 
+/**
+ * Serwer BST obsługujący wielu klientów jednocześnie
+ */
 public class TreeServer {
+  /**
+   * Uruchamia serwer na porcie 8000
+   * @param args argumenty wiersza poleceń (nieużywane)
+   */
   public static void main(String[] args) {
     int port = 8000;
 
@@ -27,6 +34,10 @@ public class TreeServer {
     }
   }
 
+  /**
+   * Obsługuje połączenie z jednym klientem
+   * @param socket socket połączonego klienta
+   */
   private static void handleClient(Socket socket) {
     try {
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -63,6 +74,14 @@ public class TreeServer {
     }
   }
 
+  /**
+   * Przetwarza polecenia BST od klienta
+   * @param tree drzewo do operacji
+   * @param in strumień wejściowy od klienta
+   * @param out strumień wyjściowy do klienta
+   * @param parse funkcja parsowania wartości z ciągu znaków
+   * @param socket socket klienta
+   */
   private static <T extends Comparable<T>> void handleTree(
     Tree<T> tree,
     BufferedReader in,

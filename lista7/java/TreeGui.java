@@ -17,6 +17,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Graficzny klient JavaFX do wizualizacji i obsługi drzewa BST
+ */
 public class TreeGui extends Application {
   private static final String HOST = "localhost";
   private static final int PORT = 8000;
@@ -26,11 +29,19 @@ public class TreeGui extends Application {
   private PrintWriter out;
   private final Object lock = new Object();
 
+  /**
+   * Inicjalizuje główne okno aplikacji
+   * @param stage główna scena JavaFX
+   */
   @Override
   public void start(Stage stage) {
     showTypeSelection(stage);
   }
 
+  /**
+   * Wyświetla ekran wyboru typu danych drzewa
+   * @param stage główna scena JavaFX
+   */
   private void showTypeSelection(Stage stage) {
     Label title = new Label("BST Server Client");
     title.setFont(Font.font(null, FontWeight.BOLD, 22));
@@ -77,6 +88,11 @@ public class TreeGui extends Application {
     stage.show();
   }
 
+  /**
+   * Wyświetla główny ekran operacji na drzewie
+   * @param stage główna scena JavaFX
+   * @param type typ danych drzewa
+   */
   private void showMainScreen(Stage stage, String type) {
     TextField inputField = new TextField();
     inputField.setPromptText("wartość");
@@ -144,6 +160,10 @@ public class TreeGui extends Application {
     stage.setScene(new Scene(root, 650, 500));
   }
 
+  /**
+   * Uruchamia operację w osobnym wątku pod blokadą
+   * @param op operacja do wykonania
+   */
   private void runOp(Runnable op) {
     new Thread(() -> {
       synchronized (lock) {
@@ -156,10 +176,18 @@ public class TreeGui extends Application {
     }).start();
   }
 
+  /**
+   * Wysyła polecenie do serwera
+   * @param cmd polecenie do wysłania
+   */
   private void sendCmd(String cmd) {
     out.println(cmd);
   }
 
+  /**
+   * Odczytuje linię odpowiedzi od serwera
+   * @return odczytana linia
+   */
   private String readLine() {
     try {
       return in.readLine();
@@ -168,6 +196,10 @@ public class TreeGui extends Application {
     }
   }
 
+  /**
+   * Pobiera dane rysowania drzewa od serwera i renderuje je w interfejsie
+   * @param treeArea kontener JavaFX na wizualizację drzewa
+   */
   private void requestDraw(VBox treeArea) {
     sendCmd("draw");
     String line;
@@ -224,6 +256,9 @@ public class TreeGui extends Application {
     });
   }
 
+  /**
+   * Zamyka połączenie z serwerem przy wyjściu z aplikacji
+   */
   @Override
   public void stop() throws Exception {
     if (socket != null && !socket.isClosed()) {
@@ -232,6 +267,10 @@ public class TreeGui extends Application {
     }
   }
 
+  /**
+   * Uruchamia aplikację JavaFX
+   * @param args argumenty wiersza poleceń
+   */
   public static void main(String[] args) {
     launch(args);
   }

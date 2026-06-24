@@ -6,28 +6,110 @@
 template <typename T>
 class TreeElem;
 
+/**
+ * Drzewo Binarne Przeszukiwań
+ *
+ */
 template <typename T>
 class Tree {
  private:
   TreeElem<T>* root;
+
+  /**
+   * Rekurencyjnie wstawia element do poddrzewa
+   * @param element wstawiany element
+   * @param node korzeń poddrzewa
+   * @return korzeń poddrzewa po wstawieniu
+   */
   TreeElem<T>* insert_helper(const T& element, TreeElem<T>* node);
+
+  /**
+   * Znajduje węzeł z minimalną wartością w poddrzewie
+   * @param node Korzeń poddrzewa
+   * @return Pointer na węzeł z minimalną wartością
+   */
   TreeElem<T>* find_min(TreeElem<T>* node);
+
+  /**
+   * Rekurencyjnie przeszukuje poddrzewo
+   * @param element Szukany element
+   * @param node   Korzeń poddrzewa
+   * @return true jeśli element istnieje, false w przeciwnym razie
+   */
   bool search_helper(const T& element, TreeElem<T>* node);
+
+  /**
+   * Rekurencyjnie usuwa element z poddrzewa
+   * @param elem Usuwany element
+   * @param node Korzeń poddrzewa
+   * @return Korzeń poddrzewa po usunięciu
+   */
   TreeElem<T>* remove_helper(const T& elem, TreeElem<T>* node);
+
   int height;
+
+  /**
+   * Rekurencyjnie wyznacza wysokość drzewa
+   * @param curr Głębokość bieżącego węzła
+   * @param node Bieżący węzeł
+   */
   void get_height_helper(int curr, TreeElem<T>* node);
 
  public:
+  /**
+   * Tworzy puste drzewo
+   */
   Tree();
+
+  /**
+   * Tworzy drzewo z jednym elementem jako korzeniem
+   * @param element Wartość korzenia.
+   */
   Tree(T element);
+
+  /**
+   * Destruktor drzewa
+   */
   ~Tree();
+
+  /**
+   * Wstawia element do drzewa
+   * @param elem Wstawiany element.
+   */
   void insert(T elem);
+
+  /**
+   * Sprawdza czy element istnieje w drzewie
+   * @param elem Szukany element
+   * @return true jeśli znaleziono, false w przeciwnym razie
+   */
   bool search(const T& elem);
+
+  /**
+   * Usuwa element z drzewa
+   * @param elem Usuwany element
+   */
   void remove(const T& elem);
+
+  /**
+   * Oblicza wysokość drzewa
+   * @return Liczba poziomów (0 dla pustego drzewa)
+   */
   int get_height();
+
+  /**
+   * Wypisuje drzewo poziomami 
+   * Puste węzły rysowane jako spacje
+   * 
+   */
   void draw();
 };
 
+/**
+ * Node drzewa
+ *
+ * @param T Typ przechowywanej wartości
+ */
 template <typename T>
 class TreeElem {
  private:
@@ -36,8 +118,17 @@ class TreeElem {
   TreeElem<T>* right;
 
  public:
+  /**
+   * Tworzy drzewo z korzeniem z podaną wartością
+   * @param element Wartość węzła
+   */
   TreeElem(T element);
+
+  /**
+   * Destruktor. Rekurencyjnie usuwa całe poddrzewo
+   */
   ~TreeElem();
+
   friend class Tree<T>;
 };
 

@@ -2,28 +2,55 @@ import java.util.ArrayList;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Drzewo Binarne Przeszukiwań
+ *
+ * @param <T> typ przechowywanych wartości
+ */
 public class Tree<T extends Comparable<T>> {
   private TreeElem<T> root;
   private int height = 0;
 
+  /**
+   * Node drzewa
+   *
+   * @param <T> typ przechowywanej wartości
+   */
   private static class TreeElem<T> {
     T element;
     TreeElem<T> left;
     TreeElem<T> right;
 
+    /**
+     * Tworzy węzeł z podaną wartością
+     * @param element wartość węzła
+     */
     TreeElem(T element) {
         this.element = element;
     }
   }
 
+  /**
+   * Tworzy puste drzewo
+   */
   public Tree() {
     this.root = null;
   }
 
+  /**
+   * Tworzy drzewo z jednym elementem jako korzeniem
+   * @param element wartość korzenia
+   */
   public Tree(T element) {
     this.root = new TreeElem<>(element);
   }
 
+  /**
+   * Rekurencyjnie wstawia element do poddrzewa
+   * @param element wstawiany element
+   * @param node korzeń poddrzewa
+   * @return korzeń poddrzewa po wstawieniu
+   */
   private TreeElem<T> insertHelper(T element, TreeElem<T> node) {
     if (node == null) { 
       return new TreeElem<>(element);
@@ -38,10 +65,20 @@ public class Tree<T extends Comparable<T>> {
     return node;
   }
 
+  /**
+   * Wstawia element do drzewa
+   * @param element wstawiany element
+   */
   public void insert(T element) {
     this.root = insertHelper(element, this.root);
   }
 
+  /**
+   * Rekurencyjnie przeszukuje poddrzewo
+   * @param element szukany element
+   * @param node korzeń poddrzewa
+   * @return true jeśli element istnieje, false w przeciwnym razie
+   */
   private boolean searchHelper(T element, TreeElem<T> node) {
     if (node == null) {
       return false;
@@ -56,10 +93,20 @@ public class Tree<T extends Comparable<T>> {
     return searchHelper(element, node.right);
   }
 
+  /**
+   * Sprawdza czy element istnieje w drzewie
+   * @param element szukany element
+   * @return true jeśli znaleziono, false w przeciwnym razie
+   */
   public boolean search(T element) {
     return searchHelper(element, this.root);
   }
 
+  /**
+   * Znajduje węzeł z minimalną wartością w poddrzewie
+   * @param node korzeń poddrzewa
+   * @return węzeł z minimalną wartością
+   */
   private TreeElem<T> findMin(TreeElem<T> node) {
     while (node.left != null) {
       node = node.left;
@@ -67,6 +114,12 @@ public class Tree<T extends Comparable<T>> {
     return node;
   }
 
+  /**
+   * Rekurencyjnie usuwa element z poddrzewa
+   * @param element usuwany element
+   * @param node korzeń poddrzewa
+   * @return korzeń poddrzewa po usunięciu
+   */
   private TreeElem<T> removeHelper(T element, TreeElem<T> node) {
     if (node == null) {
       return null;
@@ -95,10 +148,19 @@ public class Tree<T extends Comparable<T>> {
     return node;
   }
 
+  /**
+   * Usuwa element z drzewa
+   * @param element usuwany element
+   */
   public void remove(T element) {
     this.root = removeHelper(element, this.root);
   }
 
+  /**
+   * Rekurencyjnie wyznacza wysokość drzewa
+   * @param curr głębokość bieżącego węzła
+   * @param node bieżący węzeł
+   */
   private void getHeightHelper(int curr, TreeElem<T> node) {
     if (node == null) {
       if (curr > this.height) {
@@ -111,12 +173,21 @@ public class Tree<T extends Comparable<T>> {
     getHeightHelper(curr, node.right);
   }
 
+  /**
+   * Oblicza wysokość drzewa
+   * @return liczba poziomów (0 dla pustego drzewa)
+   */
   public int getHeight() {
     this.height = 0;
     getHeightHelper(0, this.root);
     return this.height;
   }
 
+  /**
+   * Wypisuje drzewo poziomami
+   * Puste węzły rysowane jako gwiazdki
+   * @param pw strumień wyjściowy
+   */
   public void draw(PrintWriter pw) {
     int h = getHeight();
     if (h == 0) return;
